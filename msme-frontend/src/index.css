@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page: #F5F7FF;
+  --bg-panel: #FFFFFF;
+  --bg-input: #F8F9FE;
+  --bg-left: linear-gradient(145deg, #EEF2FF 0%, #E8EDFB 50%, #EDE9F8 100%);
+  --brand-primary: #3D5AFE;
+  --brand-deep: #1A237E;
+  --brand-mid: #3949AB;
+  --accent: #FF9800;
+  --accent-light: #FFE0B2;
+  --text-heading: #1A1F5E;
+  --text-body: #3D4166;
+  --text-muted: #5C6484;
+  --text-placeholder: #7B84A1;
+  --border-soft: #D1D9F0;
+  --border-focus: #3D5AFE;
+  --success: #00C853;
+  --success-bg: #E8F5E9;
+  --error: #F44336;
+  --error-bg: #FFEBEE;
+  --shadow-card: 0 20px 60px rgba(61,90,254,0.12);
+  --shadow-btn: 0 8px 24px rgba(61,90,254,0.35);
+  --shadow-input: 0 0 0 4px rgba(61,90,254,0.1);
+}
+
+html, body, #root { height: 100%; width: 100%; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg-page); color: var(--text-body); -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+button { font-family: 'Outfit', sans-serif; cursor: pointer; border: none; outline: none; }
+input { font-family: 'Outfit', sans-serif; outline: none; border: none; background: none; }
+textarea { font-family: 'Outfit', sans-serif; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F5F7FF; }
+::-webkit-scrollbar-thumb { background: #C5CAE9; border-radius: 10px; }
