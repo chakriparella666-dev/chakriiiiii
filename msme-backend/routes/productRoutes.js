@@ -6,11 +6,9 @@ const Product = require("../models/Product");
 router.get("/", async (req, res) => {
   try {
     // Return only light metadata + 1 image for instant discovery
-    const products = await Product.find({}, { 
-      images: { $slice: 1 }, 
-      description: 0,
-      sizeStock: 1 // Keep sizeStock for inventory check
-    })
+    const products = await Product.find({})
+    .select('-description')
+    .slice('images', 1)
     .sort({ createdAt: -1 })
     .lean();
     res.json(products);
