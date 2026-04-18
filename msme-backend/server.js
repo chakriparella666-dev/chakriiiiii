@@ -14,21 +14,22 @@ connectDB()
 
 const app = express()
 
-// Allowed origins — add your Vercel + Render URLs here
+// Allowed origins — Vercel frontend + localhost
 const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
   'https://chakriiiiii.vercel.app',
+  'https://chakriiiiii-1-xzhc.onrender.com',
 ].filter(Boolean)
 
-// Rocket-Fast performance middle-wares
+// Middleware
 app.use(compression())
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, Postman)
+    // Allow requests with no origin (Postman, mobile apps, server-to-server)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
@@ -49,7 +50,16 @@ app.use('/api/products', require('./routes/productRoutes'))
 app.use('/api/orders',   require('./routes/orderRoutes'))
 app.use('/api/cart',     require('./routes/cartRoutes'))
 
-app.get('/health', (req, res) => res.json({ status: 'MSME API running ✅' }))
+// Health check
+app.get('/health', (req, res) => res.json({ status: 'MSME API running ✅', timestamp: new Date() }))
+
+// Root route (so browser doesn't show "Cannot GET /")
+app.get('/', (req, res) => res.json({ 
+  message: '🚀 MSME Platform API', 
+  version: '1.0.0',
+  health: '/health',
+  docs: '/api'
+}))
 
 // Error Handler
 app.use((err, req, res, next) => {

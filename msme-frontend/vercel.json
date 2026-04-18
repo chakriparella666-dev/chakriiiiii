@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://chakriiiiii.onrender.com/api/:path*"
+      "destination": "https://chakriiiiii-1-xzhc.onrender.com/api/:path*"
     },
     {
       "source": "/((?!api/).*)",
