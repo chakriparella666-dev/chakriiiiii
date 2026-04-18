@@ -20,7 +20,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
-  'https://chakriiiiii.vercel.app',
+  'https://chakriiiiiiii-56xb.vercel.app',
   'https://chakriiiiii-dcts.vercel.app',
   'https://chakriiiiii-1-xzhc.onrender.com',
 ].filter(Boolean)
