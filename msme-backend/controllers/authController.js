@@ -6,7 +6,7 @@ const User = require('../models/User')
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER
 const CLIENT = isProd 
   ? 'https://chakriiiiiiii-56xb.vercel.app' 
   : (process.env.CLIENT_URL || 'http://localhost:5173')
