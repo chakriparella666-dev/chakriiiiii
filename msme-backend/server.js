@@ -64,8 +64,11 @@ app.get('/', (req, res) => res.json({
 
 // Error Handler
 app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).json({ success: false, message: 'Internal server error' })
+  console.error('🔥 Server Error:', err.message)
+  res.status(500).json({ 
+    success: false, 
+    message: err.message || 'Internal server error' 
+  })
 })
 
 const PORT = process.env.PORT || 5000

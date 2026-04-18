@@ -1,21 +1,15 @@
 const mongoose = require('mongoose')
 
-const connectDB = async (retryCount = 10) => {
+const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 60000,
-    })
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`)
-    console.log(`📦 Using database: ${conn.connection.name}`)
-  } catch (err) {
-    if (retryCount > 0) {
-      console.log(`📡 Retrying connection in 3s... (${retryCount} attempts left)`)
-      await new Promise(resolve => setTimeout(resolve, 3000))
-      return connectDB(retryCount - 1)
+    if (!process.env.MONGO_URI) {
+      throw new Error('MONGO_URI is missing from environment variables!')
     }
-    console.error(`❌ MongoDB permanent failure: ${err.message}`)
-    process.exit(1)
+    const conn = await mongoose.connect(process.env.MONGO_URI)
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`)
+  } catch (err) {
+    console.error(`❌ MongoDB connection error: ${err.message}`)
+    // Don't exit immediately, let the app try to start so we can see logs
   }
 }
 
