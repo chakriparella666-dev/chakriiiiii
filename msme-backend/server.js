@@ -30,8 +30,12 @@ app.use(compression())
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (Postman, mobile apps, server-to-server)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow if: No origin (Postman), matches allowedOrigins, OR is a Vercel subdomain
+    if (
+      !origin || 
+      allowedOrigins.includes(origin) || 
+      origin.endsWith('.vercel.app')
+    ) {
       callback(null, true)
     } else {
       callback(new Error(`CORS blocked: ${origin}`))
