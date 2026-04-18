@@ -5,15 +5,12 @@ const connectDB = async (retryCount = 10) => {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 60000,
-      tls: true,
-      tlsAllowInvalidCertificates: true,
-      tlsAllowInvalidHostnames: true,
     })
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`)
     console.log(`📦 Using database: ${conn.connection.name}`)
   } catch (err) {
     if (retryCount > 0) {
-      console.log(`📡 Connection flicker detected. Retrying in 3s... (${retryCount} attempts left)`)
+      console.log(`📡 Retrying connection in 3s... (${retryCount} attempts left)`)
       await new Promise(resolve => setTimeout(resolve, 3000))
       return connectDB(retryCount - 1)
     }
@@ -21,6 +18,5 @@ const connectDB = async (retryCount = 10) => {
     process.exit(1)
   }
 }
-
 
 module.exports = connectDB
