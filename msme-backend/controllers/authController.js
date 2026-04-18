@@ -6,12 +6,15 @@ const User = require('../models/User')
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
 
+const isProd = process.env.NODE_ENV === 'production'
+const CLIENT = process.env.CLIENT_URL || 'http://localhost:5173'
+
 const sendToken = (user, statusCode, res) => {
   const token = signToken(user._id)
   res.cookie('token', token, {
     httpOnly: true,
-    secure:   false, // Always false for local development
-    sameSite: 'lax',
+    secure:   isProd,          // true on Render (HTTPS), false locally
+    sameSite: isProd ? 'none' : 'lax', // cross-site on prod (Vercel → Render)
     maxAge:   7 * 24 * 60 * 60 * 1000,
   })
   user.password = undefined
@@ -50,8 +53,8 @@ exports.login = async (req, res) => {
 
 exports.googleCallback = (req, res) => {
   const token = signToken(req.user._id)
-  res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'strict', maxAge: 7*24*60*60*1000 })
-  res.redirect(`${process.env.CLIENT_URL}/dashboard`)
+  // Pass token in URL so frontend stores it in localStorage (works cross-domain)
+  res.redirect(`${CLIENT}/dashboard?token=${token}`)
 }
 
 exports.getMe = async (req, res) => {

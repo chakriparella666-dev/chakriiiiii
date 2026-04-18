@@ -11,6 +11,15 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        // ── Capture Google OAuth token from URL (cross-domain redirect) ──
+        const params = new URLSearchParams(window.location.search)
+        const urlToken = params.get('token')
+        if (urlToken) {
+          localStorage.setItem('token', urlToken)
+          // Clean the token from the URL bar
+          window.history.replaceState({}, '', window.location.pathname)
+        }
+
         const data = await getMe();
         setUser(data.user);
         setLoading(false);
