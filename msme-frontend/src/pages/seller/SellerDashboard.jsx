@@ -8,7 +8,7 @@ import {
   FaBox as InventoryIcon, 
   FaClipboardList as OrdersIcon, 
   FaUserCog as AccountIcon,
-  FaPlus, FaTrashAlt, FaStore, FaSignOutAlt, FaMapMarkerAlt, FaPhone, FaSave, FaEdit, FaCheck, FaTimes, FaImage, FaChartLine, FaBars
+  FaPlus, FaTrashAlt, FaStore, FaSignOutAlt, FaMapMarkerAlt, FaPhone, FaSave, FaEdit, FaCheck, FaTimes, FaImage, FaChartLine, FaBars, FaFileInvoice, FaTruck
 } from 'react-icons/fa'
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 
