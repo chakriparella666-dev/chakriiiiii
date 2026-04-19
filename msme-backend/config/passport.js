@@ -3,9 +3,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User          = require('../models/User')
 require('dotenv').config()
 
-const IS_RENDER = process.env.RENDER || process.env.RENDER_EXTERNAL_URL;
-const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || 
-  (IS_RENDER ? 'https://chakriiiiii-1-xzhc.onrender.com/api/auth/google/callback' : 'http://localhost:5000/api/auth/google/callback');
+const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || 'https://chakriiiiii-1-xzhc.onrender.com/api/auth/google/callback';
 
 passport.use(new GoogleStrategy({
   clientID:     process.env.GOOGLE_CLIENT_ID,
