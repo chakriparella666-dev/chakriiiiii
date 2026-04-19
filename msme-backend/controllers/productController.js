@@ -22,6 +22,10 @@ exports.getProducts = async (req, res) => {
       query.category = { $regex: `^${category.trim()}$`, $options: 'i' };
     }
 
+    if (req.query.district && req.query.district.trim() !== '') {
+      query.district = req.query.district.trim();
+    }
+
     console.log(`[API] Final Mongoose Query:`, JSON.stringify(query));
     
     // Check connection state
@@ -131,6 +135,10 @@ exports.getProduct = async (req, res) => {
 exports.createProduct = async (req, res) => {
   try {
     req.body.seller = req.user.id;
+    // Set product district from seller's profile
+    const seller = await User.findById(req.user.id);
+    req.body.district = seller.district;
+    
     const product = await Product.create(req.body);
     res.status(201).json({ success: true, data: product });
   } catch (err) {
@@ -164,6 +172,7 @@ exports.updateUserProfile = async (req, res) => {
     const fieldsToUpdate = {
       businessName: req.body.businessName,
       panCardName: req.body.panCardName,
+      district: req.body.district,
       isProfileComplete: true
     };
 

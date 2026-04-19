@@ -20,9 +20,29 @@
   --nav-height: 80px;
 }
 
-/* ── Mobile overrides ── */
+/* ── Mobile & PWA optimization ── */
 @media (max-width: 767px) {
   :root { --nav-height: 60px; }
+  
+  /* Disable tap highlight on mobile for native feel */
+  * { -webkit-tap-highlight-color: transparent; }
+  
+  /* Prevent scrolling content under status bar on iOS standalone */
+  body { 
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    user-select: none; /* Prevent accidental text selection in UI */
+    -webkit-touch-callout: none;
+  }
+  
+  /* Allow selection in inputs only */
+  input, textarea { user-select: text; -webkit-touch-callout: default; }
+}
+
+/* Standalone mode specific styles (Installed App) */
+@media (display-mode: standalone) {
+  .buyer-nav { padding-top: 20px !important; } /* Extra space for status bar */
+  .seller-mobile-topbar { padding-top: 20px !important; }
 }
 
 * {

@@ -19,13 +19,17 @@ exports.placeOrder = async (req, res) => {
       seller: item.product.seller
     }));
 
-    const totalAmount = orderProducts.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+    const subtotal = orderProducts.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+    // Mock Shiprocket rate calculation: ₹40 for local (PIN starts with 1), ₹80 for others
+    const shippingFee = shippingAddress.pincode.startsWith('1') ? 40 : 80;
+    const totalAmount = subtotal + shippingFee;
 
     const order = await Order.create({
       buyer: req.user.id,
       products: orderProducts,
       shippingAddress,
       totalAmount,
+      shippingFee,
       status: 'Ordered',
       paymentStatus: 'Completed' // Mock payment
     });

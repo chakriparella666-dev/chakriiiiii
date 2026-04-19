@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
   
   // Seller specific fields
   businessName: { type: String, trim: true },
+  district: { type: String, trim: true },
   panCardName: { type: String, trim: true },
   isProfileComplete: { type: Boolean, default: false },
   

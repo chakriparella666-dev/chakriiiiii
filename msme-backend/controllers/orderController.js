@@ -36,6 +36,12 @@ exports.updateOrderStatus = async (req, res) => {
     }
 
     order.status = status;
+    
+    // Auto-generate Shiprocket AWB/Tracking ID when dispatched
+    if (status === 'Dispatched' && !order.trackingId) {
+      order.trackingId = 'SR' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    }
+    
     await order.save();
 
     res.status(200).json({ success: true, data: order });

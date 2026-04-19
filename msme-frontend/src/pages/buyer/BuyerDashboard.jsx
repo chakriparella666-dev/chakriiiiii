@@ -38,8 +38,14 @@ const ProductCard = ({ p, handleAddToCart, wishlistIds = [], toggleWishlist }) =
         borderRadius: 'var(--radius)'
       }}
     >
-      <div
-        onClick={(e) => { e.stopPropagation(); toggleWishlist(p._id) }}
+          {p.district && (
+          <div style={{ position: 'absolute', top: '16px', left: '16px', zIndex: 10, background: 'var(--primary)', color: 'white', padding: '4px 12px', borderRadius: '6px', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+            {p.district}
+          </div>
+        )}
+
+        <div
+          onClick={(e) => { e.stopPropagation(); toggleWishlist(p._id) }}
         style={{ 
           position: 'absolute', 
           top: '16px', 
@@ -142,11 +148,12 @@ export default function BuyerDashboard() {
   const [loading, setLoading] = useState(products.length === 0)
   const [category, setCategory] = useState('All')
   const [wishlistIds, setWishlistIds] = useState([])
+  const [shopLocal, setShopLocal] = useState(false)
 
   useEffect(() => {
     fetchProducts()
     fetchWishlist()
-  }, [search, category])
+  }, [search, category, shopLocal])
 
   const requestCounter = useRef(0)
 
@@ -157,6 +164,7 @@ export default function BuyerDashboard() {
       const params = new URLSearchParams()
       if (search) params.append('search', search)
       if (category && category !== 'All') params.append('category', category)
+      if (shopLocal && user?.district) params.append('district', user.district)
       
       const { data } = await axios.get(`/api/products?${params.toString()}`)
       
@@ -216,13 +224,30 @@ export default function BuyerDashboard() {
 
       {/* Main Content Area */}
       <main className="main-content-pad" style={{ maxWidth: '1400px', margin: 'clamp(20px, 5vw, 40px) auto', padding: '0 clamp(16px, 4vw, 24px)' }}>
-        <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.5px' }}>
-            {category === 'All' ? (search ? `Results for "${search}"` : 'Our Best Collection') : `Latest in ${category}`}
-          </h2>
-          {(!loading || products.length > 0) && (
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Found {products.length} products curated for you.</p>
-          )}
+        <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
+          <div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.5px' }}>
+              {category === 'All' ? (search ? `Results for "${search}"` : 'Our Best Collection') : `Latest in ${category}`}
+            </h2>
+            {(!loading || products.length > 0) && (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Found {products.length} products curated for you.</p>
+            )}
+          </div>
+
+          <div 
+            onClick={() => setShopLocal(!shopLocal)}
+            style={{ 
+              display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 20px', 
+              background: shopLocal ? 'var(--text-main)' : 'white', 
+              borderRadius: '12px', border: '1.5px solid var(--border-soft)',
+              cursor: 'pointer', transition: 'var(--transition)', color: shopLocal ? 'white' : 'var(--text-main)'
+            }}
+          >
+            <div style={{ position: 'relative', width: '36px', height: '20px', background: shopLocal ? 'var(--secondary)' : '#e2e8f0', borderRadius: '10px', transition: '0.3s' }}>
+              <div style={{ position: 'absolute', top: '2px', left: shopLocal ? '18px' : '2px', width: '16px', height: '16px', background: 'white', borderRadius: '50%', transition: '0.3s' }}></div>
+            </div>
+            <span style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.5px' }}>SHOP LOCAL {user?.district && `(${user.district.toUpperCase()})`}</span>
+          </div>
         </div>
 
         {loading && products.length === 0 ? (

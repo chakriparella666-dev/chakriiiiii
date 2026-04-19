@@ -211,11 +211,16 @@ function getSizeConfig(category) {
 
 // ── Sub-components defined OUTSIDE main component (prevents re-mount flicker) ──
 
+import AnalyticsTab from './AnalyticsTab'
+
 function SellerSidebar({ activeTab, setActiveTab, logout, mobileSidebarOpen, onCloseMobile }) {
   const tabs = [
     { id: 'overview',   icon: <DashboardIcon />, label: 'Market Overview' },
+    { id: 'analytics',  icon: <FaChartLine />,   label: 'AI Analytics' },
     { id: 'inventory',  icon: <InventoryIcon />, label: 'Boutique Inventory' },
     { id: 'orders',     icon: <OrdersIcon />,    label: 'Customer Orders' },
+    { id: 'schemes',    icon: <FaStore />,       label: 'Govt Schemes' },
+    { id: 'finance',    icon: <AccountIcon />,   label: 'Finance Gateway' },
     { id: 'account',    icon: <AccountIcon />,   label: 'Hub Settings' },
   ]
   return (
@@ -428,6 +433,12 @@ function OverviewTab({ user, stats, orders, products }) {
 }
 
 function InventoryTab({ products, onAddNew, onEdit, onStockChange, onDelete }) {
+  const outOfStock = products.filter(p => !p.sizes.some(s => s.stock > 0)).length
+  const lowStock = products.filter(p => {
+    const total = p.sizes.reduce((acc, s) => acc + (parseInt(s.stock) || 0), 0)
+    return total > 0 && total < 10
+  }).length
+
   return (
     <div className="animate-fade-in" style={{ padding: '0 20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px', flexWrap: 'wrap', gap: '16px' }}>
@@ -440,6 +451,21 @@ function InventoryTab({ products, onAddNew, onEdit, onStockChange, onDelete }) {
         </button>
       </div>
 
+      <div className="grid-3" style={{ gap: '24px', marginBottom: '32px' }}>
+        <div className="glass-card" style={{ padding: '24px', borderLeft: '4px solid #ef4444' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px' }}>Out of Stock</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800 }}>{outOfStock} Items</div>
+        </div>
+        <div className="glass-card" style={{ padding: '24px', borderLeft: '4px solid #f59e0b' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px' }}>Low Stock Alert</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800 }}>{lowStock} Items</div>
+        </div>
+        <div className="glass-card" style={{ padding: '24px', borderLeft: '4px solid #059669' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px' }}>AI Stock Health</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#059669' }}>{lowStock > 3 ? 'Needs Action' : 'Excellent'}</div>
+        </div>
+      </div>
+
       {products.length === 0
         ? <div className="glass-card" style={{ padding: '100px', textAlign: 'center', border: '1px solid var(--border-soft)' }}>
             <InventoryIcon size={64} style={{ marginBottom: '24px', opacity: 0.1 }} />
@@ -447,18 +473,19 @@ function InventoryTab({ products, onAddNew, onEdit, onStockChange, onDelete }) {
             <p style={{ color: 'var(--text-muted)' }}>Start your boutique by adding your first product.</p>
           </div>
         : <>
-            {/* Desktop Table */}
             <div className="glass-card inventory-table" style={{ padding: 0, overflow: 'hidden', border: '1px solid var(--border-soft)' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ background: 'var(--background-alt)', borderBottom: '1px solid var(--border-soft)' }}>
-                    {['Product Details', 'Price', 'Stock Allocation', 'Actions'].map((h, i) => (
-                      <th key={i} style={{ textAlign: i === 3 ? 'right' : 'left', padding: '24px 32px', fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 800 }}>{h}</th>
+                    {['Product Details', 'Price', 'Stock Allocation', 'Restock AI', 'Actions'].map((h, i) => (
+                      <th key={i} style={{ textAlign: i === 4 ? 'right' : 'left', padding: '24px 32px', fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 800 }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map(p => (
+                  {products.map(p => {
+                    const totalStock = p.sizes.reduce((acc, s) => acc + (parseInt(s.stock) || 0), 0)
+                    return (
                     <tr key={p._id} style={{ borderBottom: '1px solid var(--border-soft)', transition: 'var(--transition)' }}>
                       <td style={{ padding: '24px 32px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -484,6 +511,15 @@ function InventoryTab({ products, onAddNew, onEdit, onStockChange, onDelete }) {
                           ))}
                         </div>
                       </td>
+                      <td style={{ padding: '24px 32px' }}>
+                        {totalStock === 0 ? (
+                          <div style={{ color: '#ef4444', fontWeight: 800, fontSize: '0.85rem' }}>RESTOCK NOW</div>
+                        ) : totalStock < 10 ? (
+                          <div style={{ color: '#f59e0b', fontWeight: 800, fontSize: '0.85rem' }}>LOW: 3d Left</div>
+                        ) : (
+                          <div style={{ color: '#059669', fontWeight: 800, fontSize: '0.85rem' }}>HEALTHY: 15d+</div>
+                        )}
+                      </td>
                       <td style={{ padding: '24px 32px', textAlign: 'right' }}>
                         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                           <button className="btn-outline" style={{ padding: '10px', borderRadius: '10px', width: '40px', height: '40px' }} onClick={() => onEdit(p)}><FaEdit /></button>
@@ -491,10 +527,49 @@ function InventoryTab({ products, onAddNew, onEdit, onStockChange, onDelete }) {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                   )})}
                 </tbody>
               </table>
             </div>
+            {/* Mobile Cards */}
+            <div className="inventory-cards">
+              {products.map(p => {
+                const totalStock = p.sizes.reduce((acc, s) => acc + (parseInt(s.stock) || 0), 0)
+                return (
+                <div key={p._id} className="inventory-card" style={{ position: 'relative' }}>
+                  {totalStock < 10 && (
+                    <div style={{ position: 'absolute', top: '10px', right: '10px', background: totalStock === 0 ? '#ef4444' : '#f59e0b', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 900, zIndex: 5 }}>
+                      {totalStock === 0 ? 'OUT OF STOCK' : 'LOW STOCK'}
+                    </div>
+                  )}
+                  <div className="inventory-card-header">
+                    <img src={p.images[0] || 'https://via.placeholder.com/64'} style={{ width: '60px', height: '70px', borderRadius: '10px', objectFit: 'cover', background: '#f8fafc', border: '1px solid var(--border-soft)' }} onError={e => { e.target.src = 'https://via.placeholder.com/64' }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-main)' }}>{p.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>{p.category}</div>
+                      <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--text-main)', marginTop: '4px' }}>₹{p.price.toLocaleString()}</div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    {p.sizes.map(s => (
+                      <div key={s.size} style={{ display: 'flex', alignItems: 'center', background: 'white', border: '1.5px solid var(--border-soft)', borderRadius: '8px', overflow: 'hidden' }}>
+                        <span style={{ padding: '4px 8px', fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-muted)', background: '#f8fafc', borderRight: '1.5px solid var(--border-soft)' }}>{s.size}</span>
+                        <input type="number" defaultValue={s.stock} onBlur={e => onStockChange(p._id, s.size, e.target.value)} style={{ width: '42px', border: 'none', background: 'transparent', padding: '4px', fontSize: '0.8rem', textAlign: 'center', fontWeight: 700, outline: 'none' }} />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="inventory-card-actions">
+                    <button className="btn-outline" style={{ padding: '8px 16px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }} onClick={() => onEdit(p)}><FaEdit /> Edit</button>
+                    <button className="btn-outline" style={{ padding: '8px 16px', borderRadius: '8px', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }} onClick={() => onDelete(p._id)}><FaTrashAlt /> Delete</button>
+                  </div>
+                </div>
+              )})}
+            </div>
+          </>
+      }
+    </div>
+  )
+}
 
             {/* Mobile Cards */}
             <div className="inventory-cards">
@@ -550,6 +625,15 @@ function OrdersTab({ orders, user, onUpdateStatus }) {
                 <div style={{ fontWeight: 800, fontSize: '1.4rem', color: 'var(--text-main)' }}>{order.buyer.name}</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.75rem', borderRadius: '8px' }}>
+                    <FaFileInvoice /> Invoice
+                  </button>
+                  <button className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.75rem', borderRadius: '8px', background: '#2563eb' }} onClick={() => alert('Booking courier via Shiprocket API...')}>
+                    <FaTruck /> Book Courier
+                  </button>
+                </div>
+                <div style={{ width: '1px', height: '24px', background: 'var(--border-soft)' }}></div>
                 <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)' }}>Status</span>
                 <select 
                   value={order.status} 
@@ -563,6 +647,22 @@ function OrdersTab({ orders, user, onUpdateStatus }) {
             </div>
             <div className="order-grid-2" style={{ padding: '24px' }}>
               <div>
+                <h5 style={{ marginBottom: '20px', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Logistics & Payment</h5>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Courier Partner</span>
+                    <span style={{ fontWeight: 700 }}>{order.courierPartner || 'Shiprocket'}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Tracking AWB</span>
+                    <span style={{ fontWeight: 800, color: 'var(--primary)', fontFamily: 'monospace' }}>{order.trackingId || 'Pending Dispatch'}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Shipping Fee</span>
+                    <span style={{ fontWeight: 700 }}>₹{order.shippingFee || 0}</span>
+                  </div>
+                </div>
+                
                 <h5 style={{ marginBottom: '20px', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Purchased Items</h5>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {order.products.filter(p => p.seller === user._id || p.seller === user.id).map((p, idx) => (
@@ -600,7 +700,9 @@ function OrdersTab({ orders, user, onUpdateStatus }) {
   )
 }
 
-function AccountTab({ user, editProfile, setEditProfile, newBusinessName, setNewBusinessName, onSave }) {
+const DISTRICTS = ['North Delhi', 'South Mumbai', 'Bangalore Urban', 'Hyderabad', 'Chennai East', 'Kolkata Central', 'Pune District', 'Ahmedabad']
+
+function AccountTab({ user, editProfile, setEditProfile, newBusinessName, setNewBusinessName, newDistrict, setNewDistrict, onSave }) {
   return (
     <div className="animate-fade-in" style={{ padding: '0 20px', maxWidth: '1000px' }}>
       <header style={{ marginBottom: '48px' }}>
@@ -648,13 +750,17 @@ function AccountTab({ user, editProfile, setEditProfile, newBusinessName, setNew
             </div>
           </div>
           <div className="input-group">
-            <label className="input-label" style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '1px', marginBottom: '12px', display: 'block' }}>PAN Identification Name</label>
-            <input 
+            <label className="input-label" style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '1px', marginBottom: '12px', display: 'block' }}>Operating District</label>
+            <select 
               className="input-field" 
-              value={user.panCardName || '—'} 
-              readOnly 
-              style={{ background: 'var(--background-alt)', borderRadius: '12px', border: '1.5px solid var(--border-soft)', fontWeight: 700, fontSize: '1.1rem', color: 'var(--text-muted)' }} 
-            />
+              value={newDistrict} 
+              disabled={!editProfile}
+              onChange={e => setNewDistrict(e.target.value)} 
+              style={{ background: editProfile ? 'white' : 'var(--background-alt)', borderRadius: '12px', border: '1.5px solid var(--border-soft)', fontWeight: 700, fontSize: '1.1rem' }} 
+            >
+              <option value="">Select District</option>
+              {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
           </div>
         </div>
         
@@ -787,6 +893,8 @@ export default function SellerDashboard() {
   const [editId, setEditId] = useState(null)
   const [editProfile, setEditProfile] = useState(false)
   const [newBusinessName, setNewBusinessName] = useState(user?.businessName || '')
+  const [newDistrict, setNewDistrict] = useState(user?.district || '')
+  
   const blankProduct = {
     name: '', description: '', price: '', category: '', images: [''],
     sizes: [{ size: 'XS', stock: 0 }, { size: 'S', stock: 0 }, { size: 'M', stock: 0 },
@@ -864,7 +972,7 @@ export default function SellerDashboard() {
   }
   const handleUpdateProfile = async () => {
     try {
-      const data = await productApi.updateProfile({ businessName: newBusinessName })
+      const data = await productApi.updateProfile({ businessName: newBusinessName, district: newDistrict })
       setUser(data.user); setEditProfile(false); alert('Profile updated!')
     } catch (err) { alert(err.response?.data?.message || 'Update failed') }
   }
@@ -926,9 +1034,84 @@ export default function SellerDashboard() {
       />
       <main className="dashboard-content">
         {activeTab === 'overview'  && <OverviewTab user={user} stats={stats} orders={orders} products={products} />}
+        {activeTab === 'analytics' && (
+          <AnalyticsTab 
+            products={products.map(p => ({ 
+              ...p, 
+              totalStock: p.sizes.reduce((acc, s) => acc + (parseInt(s.stock) || 0), 0) 
+            }))} 
+            orders={orders} 
+          />
+        )}
         {activeTab === 'inventory' && <InventoryTab products={products} onAddNew={() => setShowAddForm(true)} onEdit={handleOpenEdit} onStockChange={handleStockChange} onDelete={handleDeleteProduct} />}
         {activeTab === 'orders'    && <OrdersTab orders={orders} user={user} onUpdateStatus={handleUpdateStatus} />}
-        {activeTab === 'account'   && <AccountTab user={user} editProfile={editProfile} setEditProfile={setEditProfile} newBusinessName={newBusinessName} setNewBusinessName={setNewBusinessName} onSave={handleUpdateProfile} />}
+        {activeTab === 'schemes'   && (
+           <div className="animate-fade-in" style={{ padding: '0 20px' }}>
+             <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '24px' }}>Govt Schemes Portal</h1>
+             <div className="glass-card" style={{ padding: '40px' }}>
+               <p style={{ color: 'var(--text-muted)' }}>Fetching MSME schemes for your district...</p>
+             </div>
+           </div>
+        )}
+        {activeTab === 'finance'   && (
+           <div className="animate-fade-in" style={{ padding: '0 20px' }}>
+             <header style={{ marginBottom: '40px' }}>
+              <h1 style={{ fontSize: '2.5rem', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Finance & Micro-Loans</h1>
+              <p style={{ color: 'var(--text-muted)' }}>Empowering your MSME growth with pre-approved credit lines.</p>
+             </header>
+
+             <div className="glass-card" style={{ padding: '32px', background: 'linear-gradient(135deg, #1e293b, #0f172a)', color: 'white', marginBottom: '32px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <h4 style={{ color: 'var(--secondary)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.8rem' }}>Credit Eligibility Scan</h4>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Eligible for up to ₹{(stats.totalSales * 0.4).toLocaleString()}</h2>
+                    <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '4px' }}>Based on your total revenue of ₹{stats.totalSales?.toLocaleString()}</p>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,0.1)', padding: '20px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <DashboardIcon size={32} />
+                  </div>
+                </div>
+             </div>
+
+             <h3 style={{ marginBottom: '24px' }}>Recommended Loan Products</h3>
+             <div className="grid-3" style={{ gap: '24px' }}>
+                {[
+                  { lender: 'HDFC Bank', product: 'MSME Growth Capital', amount: '₹5,00,000', rate: '8.5% p.a.', type: 'Unsecured' },
+                  { lender: 'SBI', product: 'SME Smart Score', amount: '₹2,00,000', rate: '7.9% p.a.', type: 'Quick Disbursal' },
+                  { lender: 'SIDBI', product: 'Make In India Fund', amount: '₹10,00,000', rate: '6.5% p.a.', type: 'Govt Supported' },
+                ].map((loan, i) => (
+                  <div key={i} className="glass-card" style={{ padding: '24px', border: '1px solid var(--border-soft)' }}>
+                    <div style={{ background: 'var(--background-alt)', display: 'inline-block', padding: '4px 12px', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '16px' }}>{loan.type}</div>
+                    <h4 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '4px' }}>{loan.lender}</h4>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '20px' }}>{loan.product}</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                      <div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Max Amount</div>
+                        <div style={{ fontWeight: 800 }}>{loan.amount}</div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Interest</div>
+                        <div style={{ fontWeight: 800, color: '#059669' }}>{loan.rate}</div>
+                      </div>
+                    </div>
+                    <button className="btn-primary" style={{ width: '100%', padding: '12px' }}>Apply via MSME Portal</button>
+                  </div>
+                ))}
+             </div>
+           </div>
+        )}
+        {activeTab === 'account'   && (
+           <AccountTab 
+             user={user} 
+             editProfile={editProfile} 
+             setEditProfile={setEditProfile} 
+             newBusinessName={newBusinessName} 
+             setNewBusinessName={setNewBusinessName} 
+             newDistrict={newDistrict}
+             setNewDistrict={setNewDistrict}
+             onSave={handleUpdateProfile} 
+           />
+        )}
       </main>
       {showAddForm && <ProductForm newProduct={newProduct} setNewProduct={setNewProduct} isEditing={isEditing} onSubmit={handleAddProduct} onClose={handleCloseForm} />}
     </div>

@@ -49,6 +49,10 @@ const ProductSchema = new mongoose.Schema({
   numReviews: {
     type: Number,
     default: 0
+  },
+  district: {
+    type: String,
+    index: true
   }
 }, {
   timestamps: true

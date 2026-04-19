@@ -54,6 +54,7 @@ app.use('/api/user',     require('./routes/userRoutes'))
 app.use('/api/products', require('./routes/productRoutes'))
 app.use('/api/orders',   require('./routes/orderRoutes'))
 app.use('/api/cart',     require('./routes/cartRoutes'))
+app.use('/api/logistics', require('./routes/logisticsRoutes'))
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'MSME API running ✅', timestamp: new Date() }))

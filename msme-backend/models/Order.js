@@ -50,6 +50,17 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     enum: ['Pending', 'Completed', 'Failed'],
     default: 'Pending'
+  },
+  shippingFee: {
+    type: Number,
+    default: 0
+  },
+  trackingId: {
+    type: String
+  },
+  courierPartner: {
+    type: String,
+    default: 'Shiprocket'
   }
 }, {
   timestamps: true

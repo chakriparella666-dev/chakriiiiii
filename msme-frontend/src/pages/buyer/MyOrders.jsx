@@ -92,6 +92,13 @@ export default function MyOrders() {
                   ))}
                 </div>
 
+                {/* Tracking ID Display */}
+                {order.trackingId && (
+                  <div style={{ padding: '8px 28px', background: '#ecfdf5', color: '#047857', fontSize: '0.8rem', fontWeight: 700, display: 'flex', gap: '8px', alignItems: 'center', borderTop: '1px solid #d1fae5' }}>
+                    <FaTruck size={12} /> {order.courierPartner} AWB ID: <span style={{ fontFamily: 'monospace', letterSpacing: '1px' }}>{order.trackingId}</span>
+                  </div>
+                )}
+
                 {/* Tracking */}
                 <div style={{ padding: '20px 28px', background: '#fafafa', borderTop: '1px solid #eee' }}>
                   <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151', marginBottom: '16px' }}>Order Tracking</div>

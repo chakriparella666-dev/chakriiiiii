@@ -200,6 +200,7 @@ export default function Checkout() {
                 {[
                   { id: 'COD', label: 'Cash on Delivery', desc: 'Secure doorstep payment' },
                   { id: 'UPI', label: 'UPI Payment', desc: 'Scan & Pay instantly' },
+                  { id: 'Razorpay', label: 'Net Banking / Wallet', desc: 'Powered by Razorpay Secure' },
                   { id: 'CARD', label: 'Credit / Debit Card', desc: 'End-to-end encrypted' },
                 ].map(m => (
                   <div 
@@ -245,13 +246,19 @@ export default function Checkout() {
                 <span>₹{subtotal.toLocaleString()}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                <span>Shipping</span>
-                <span style={{ color: '#059669', fontWeight: 600 }}>Complimentary</span>
+                <span>Shipping (Shiprocket)</span>
+                {address.pincode ? (
+                  <span>₹{address.pincode.startsWith('1') ? 40 : 80}</span>
+                ) : (
+                  <span style={{ fontSize: '0.75rem' }}>Calculated at next step</span>
+                )}
               </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1.5px solid var(--border-soft)', paddingTop: '20px', marginBottom: '24px' }}>
               <span style={{ fontWeight: 800, fontSize: '1.1rem' }}>Total</span>
-              <span style={{ fontWeight: 800, fontSize: '1.2rem' }}>₹{subtotal.toLocaleString()}</span>
+              <span style={{ fontWeight: 800, fontSize: '1.2rem' }}>
+                ₹{(subtotal + (address.pincode ? (address.pincode.startsWith('1') ? 40 : 80) : 0)).toLocaleString()}
+              </span>
             </div>
             
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '10px' }}>
