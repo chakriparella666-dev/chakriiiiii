@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/auth');
+const { verifyToken } = require('../middleware/authMiddleware');
 const { createShipment, getTrackingInfo } = require('../controllers/logisticsController');
 
-router.post('/shipment', protect, createShipment);
-router.get('/track/:awb', protect, getTrackingInfo);
+router.post('/shipment', verifyToken, createShipment);
+router.get('/track/:awb', verifyToken, getTrackingInfo);
 
 module.exports = router;
