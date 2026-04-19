@@ -17,10 +17,29 @@ router.put('/update-profile', verifyToken, (req, res, next) => {
 router.post('/logout',    verifyToken, logout)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password/:token', resetPassword)
-router.get('/google',     passport.authenticate('google', { scope: ['profile','email'], session: false }))
-router.get('/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: `${process.env.CLIENT_URL}/login?error=google_failed` }),
-  googleCallback
-)
+router.get('/google', (req, res, next) => {
+  const host = req.get('host');
+  // Use x-forwarded-proto for Render/Vercel (HTTPS)
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  const callbackURL = `${protocol}://${host}/api/auth/google/callback`;
+  
+  passport.authenticate('google', { 
+    scope: ['profile','email'], 
+    session: false,
+    callbackURL: callbackURL
+  })(req, res, next);
+});
+
+router.get('/google/callback', (req, res, next) => {
+  const host = req.get('host');
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  const callbackURL = `${protocol}://${host}/api/auth/google/callback`;
+
+  passport.authenticate('google', { 
+    session: false, 
+    callbackURL: callbackURL,
+    failureRedirect: `${process.env.CLIENT_URL || 'https://chakriiiiii-e9j3.vercel.app'}/login?error=google_failed` 
+  })(req, res, next);
+}, googleCallback);
 
 module.exports = router
