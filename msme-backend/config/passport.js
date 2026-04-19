@@ -3,7 +3,11 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User          = require('../models/User')
 require('dotenv').config()
 
-const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || 'https://chakriiiiii-1-xzhc.onrender.com/api/auth/google/callback';
+const envCallback = process.env.GOOGLE_CALLBACK_URL;
+// Safety: If the dashboard variable is accidentally set to 'localhost', ignore it
+const CALLBACK_URL = (envCallback && !envCallback.includes('localhost')) 
+  ? envCallback 
+  : 'https://chakriiiiii-1-xzhc.onrender.com/api/auth/google/callback';
 
 passport.use(new GoogleStrategy({
   clientID:     process.env.GOOGLE_CLIENT_ID,

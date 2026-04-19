@@ -6,7 +6,10 @@ const User = require('../models/User')
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
 
-const CLIENT = process.env.CLIENT_URL || 'https://chakriiiiii-e9j3.vercel.app';
+const envClient = process.env.CLIENT_URL;
+const CLIENT = (envClient && !envClient.includes('localhost')) 
+  ? envClient 
+  : 'https://chakriiiiii-e9j3.vercel.app';
 
 const sendToken = (user, statusCode, res) => {
   const token = signToken(user._id)
