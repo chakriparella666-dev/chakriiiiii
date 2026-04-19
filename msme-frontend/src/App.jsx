@@ -28,20 +28,20 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Navigate to="/buyer" replace />} />
 
-      {/* Buyer Routes */}
-      <Route path="/buyer" element={<BuyerDashboard />} />
+      {/* Protected Buyer Routes */}
+      <Route path="/buyer" element={user ? <BuyerDashboard /> : <Navigate to="/login" replace />} />
       <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/order-success" element={<OrderSuccess />} />
-      <Route path="/my-orders" element={<MyOrders />} />
-      <Route path="/addresses" element={<Addresses />} />
-      <Route path="/wishlist" element={<Wishlist />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" replace />} />
+      <Route path="/checkout" element={user ? <Checkout /> : <Navigate to="/login" replace />} />
+      <Route path="/order-success" element={user ? <OrderSuccess /> : <Navigate to="/login" replace />} />
+      <Route path="/my-orders" element={user ? <MyOrders /> : <Navigate to="/login" replace />} />
+      <Route path="/addresses" element={user ? <Addresses /> : <Navigate to="/login" replace />} />
+      <Route path="/wishlist" element={user ? <Wishlist /> : <Navigate to="/login" replace />} />
+      <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
 
-      {/* Workspace Routes */}
-      <Route path="/seller" element={<SellerDashboard />} />
-      <Route path="/admin" element={<AdminDashboard />} />
+      {/* Protected Workspace Routes */}
+      <Route path="/seller" element={user ? <SellerDashboard /> : <Navigate to="/login" replace />} />
+      <Route path="/admin" element={user ? <AdminDashboard /> : <Navigate to="/login" replace />} />
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
