@@ -283,7 +283,7 @@ function OverviewTab({ user, stats, orders, products }) {
       <header className="overview-header" style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
         <div>
           <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: 800, color: 'var(--text-main)', marginBottom: '4px', letterSpacing: '-1.5px', fontFamily: "'Sora', sans-serif" }}>
-            Hello, {user.name.split(' ')[0]}
+            Hello, {user?.name ? user.name.split(' ')[0] : 'Merchant'}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(1rem, 3vw, 1.2rem)', fontWeight: 500 }}>
             Performance overview for <strong style={{ color: 'var(--text-main)' }}>{user.businessName}</strong>

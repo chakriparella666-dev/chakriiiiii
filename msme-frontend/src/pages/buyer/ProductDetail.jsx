@@ -72,6 +72,8 @@ export default function ProductDetail() {
       await axios.post('/api/cart/add', { productId: id, quantity, size: selectedSize }, { withCredentials: true })
       setAdded(true)
       showToast('Added to cart! 🛒', 'success')
+      // Trigger navbar update
+      window.dispatchEvent(new Event('cartUpdated'))
     } catch (err) {
       const msg = err.response?.data?.message || 'Could not add to cart. Please log in.'
       showToast(msg, 'error')
@@ -243,7 +245,7 @@ export default function ProductDetail() {
               className="btn-outline"
               style={{ padding: '16px', borderRadius: '12px', fontSize: '1rem', width: '100%' }}
             >
-              Checkout Now
+              Buy Now
             </button>
           </div>
 

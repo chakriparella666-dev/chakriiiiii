@@ -229,7 +229,7 @@ export default function Checkout() {
                 onClick={handlePlaceOrder}
                 disabled={placing}
               >
-                {placing ? 'Processing...' : `Pay ₹${subtotal.toLocaleString()}`}
+                {placing ? 'Processing...' : `Buy Now · ₹${subtotal.toLocaleString()}`}
               </button>
             </div>
           )}

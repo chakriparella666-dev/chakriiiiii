@@ -15,7 +15,7 @@ export default function Profile() {
   const fetchProfile = async () => {
     try {
       const { data } = await axios.get('/api/auth/me', { withCredentials: true })
-      setProfile(data.data)
+      setProfile(data.data || data)
     } catch (err) { console.error(err) }
   }
 
@@ -28,7 +28,7 @@ export default function Profile() {
           
           <div style={{ background: 'linear-gradient(135deg, var(--primary-dark), var(--primary))', padding: '40px', color: 'white', textAlign: 'center', position: 'relative' }}>
             <div style={{ width: '80px', height: '80px', background: 'rgba(255,255,255,0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '2rem', fontWeight: 800 }}>
-              {profile.name?.charAt(0).toUpperCase() || 'U'}
+              {profile.name ? profile.name.charAt(0).toUpperCase() : 'U'}
             </div>
             <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: 800 }}>{profile.name || 'Your Profile'}</h1>
             <p style={{ margin: '8px 0 0', opacity: 0.9 }}>Buyer Account</p>

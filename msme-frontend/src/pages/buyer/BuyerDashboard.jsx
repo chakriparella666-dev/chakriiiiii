@@ -181,6 +181,7 @@ export default function BuyerDashboard() {
     try {
       await axios.post('/api/cart/add', { productId, quantity: 1, size }, { withCredentials: true })
       alert('Product added to your bag!')
+      window.dispatchEvent(new Event('cartUpdated'))
     } catch (err) { alert('Sign in to start shopping') }
   }
 

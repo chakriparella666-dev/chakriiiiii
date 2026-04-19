@@ -28,8 +28,8 @@ export default function GoogleAuthBtn({ loading, setLoading }) {
         transition: 'all 0.2s ease',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
       }}
-      onMouseEnter={e => { if (!loading) e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,1)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'; e.currentTarget.style.transform = 'translateY(0)' }}
+      onMouseEnter={e => { if (!loading) { e.currentTarget.style.boxShadow = '0 8px 24px rgba(61, 90, 254, 0.12)'; e.currentTarget.style.borderColor = '#3D5AFE' } }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'; e.currentTarget.style.borderColor = 'var(--border-soft)' }}
     >
       {loading ? (
         <div style={{ width: 18, height: 18, border: '2px solid #DDE1EF', borderTop: '2px solid #3D5AFE', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />

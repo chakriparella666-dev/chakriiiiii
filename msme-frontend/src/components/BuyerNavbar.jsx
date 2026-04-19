@@ -80,7 +80,14 @@ export default function BuyerNavbar({ onSearchChange, onCategoryChange, currentS
     }, () => { alert('Unable to retrieve your location.'); setGettingLocation(false) })
   }
 
-  useEffect(() => { fetchCategories(); fetchCart() }, [])
+  useEffect(() => { 
+    fetchCategories(); 
+    fetchCart();
+    
+    // Refresh cart when triggered by other components
+    window.addEventListener('cartUpdated', fetchCart);
+    return () => window.removeEventListener('cartUpdated', fetchCart);
+  }, [])
   useEffect(() => { if (currentSearch !== undefined) setLocalSearch(currentSearch) }, [currentSearch])
 
   const fetchCategories = async () => {
@@ -188,7 +195,7 @@ export default function BuyerNavbar({ onSearchChange, onCategoryChange, currentS
           >
             <FaSearch size={18} />
           </button>
-
+          
           {/* Cart button */}
           <div
             onClick={() => navigate('/cart')}
@@ -211,15 +218,6 @@ export default function BuyerNavbar({ onSearchChange, onCategoryChange, currentS
               display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800
             }}>{cartCount}</span>
           </div>
-
-          {/* Mobile hamburger for sidebar */}
-          <button
-            className="buyer-nav-hamburger"
-            onClick={() => setSidebarOpen(true)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-main)', display: 'flex', alignItems: 'center', padding: '6px' }}
-          >
-            <FaBars size={20} />
-          </button>
         </div>
       </nav>
 
