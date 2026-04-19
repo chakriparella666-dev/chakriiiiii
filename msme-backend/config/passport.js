@@ -4,10 +4,9 @@ const User          = require('../models/User')
 require('dotenv').config()
 
 const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER
-
-const CALLBACK_URL = isProd 
+const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || (isProd 
   ? 'https://chakriiiiii-1-xzhc.onrender.com/api/auth/google/callback'
-  : (process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/auth/google/callback')
+  : 'http://localhost:5000/api/auth/google/callback')
 
 passport.use(new GoogleStrategy({
   clientID:     process.env.GOOGLE_CLIENT_ID,
