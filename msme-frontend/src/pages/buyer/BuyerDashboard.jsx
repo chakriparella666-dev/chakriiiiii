@@ -214,27 +214,27 @@ export default function BuyerDashboard() {
       />
 
       {/* Main Content Area */}
-      <main className="main-content-pad" style={{ maxWidth: '1400px', margin: '40px auto', padding: '0 20px' }}>
-        <div style={{ marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)' }}>
+      <main className="main-content-pad" style={{ maxWidth: '1400px', margin: 'clamp(20px, 5vw, 40px) auto', padding: '0 clamp(16px, 4vw, 24px)' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.5px' }}>
             {category === 'All' ? (search ? `Results for "${search}"` : 'Our Best Collection') : `Latest in ${category}`}
           </h2>
           {(!loading || products.length > 0) && (
-            <p style={{ color: 'var(--text-muted)' }}>Found {products.length} products curated for you.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Found {products.length} products curated for you.</p>
           )}
         </div>
 
         {loading && products.length === 0 ? (
-          <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '32px' }}>
+          <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(150px, 40vw, 280px), 1fr))', gap: 'clamp(12px, 3vw, 32px)' }}>
             {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <ProductSkeleton key={i} />)}
           </div>
         ) : products.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px', background: 'white', borderRadius: '20px', border: '2px dashed var(--border)' }}>
-            <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)' }}>No matches found in {category}.</p>
-            <button className="btn-outline" style={{ marginTop: '20px' }} onClick={() => { setCategory('All'); setSearch(''); }}>Back to Home</button>
+          <div style={{ textAlign: 'center', padding: '80px 20px', background: 'white', borderRadius: '20px', border: '2px dashed var(--border)' }}>
+            <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>No matches found in {category}.</p>
+            <button className="btn-outline" style={{ marginTop: '16px' }} onClick={() => { setCategory('All'); setSearch(''); }}>Back to Home</button>
           </div>
         ) : (
-          <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '32px' }}>
+          <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(150px, 40vw, 280px), 1fr))', gap: 'clamp(12px, 3vw, 32px)' }}>
             {products.map(p => (
               <ProductCard key={p._id} p={p} handleAddToCart={handleAddToCart} wishlistIds={wishlistIds} toggleWishlist={toggleWishlist} />
             ))}

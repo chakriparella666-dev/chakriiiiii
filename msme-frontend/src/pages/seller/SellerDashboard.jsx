@@ -279,61 +279,61 @@ function OverviewTab({ user, stats, orders, products }) {
   const chartData = stats.dailyRevenue || []
   
   return (
-    <div className="animate-fade-in" style={{ padding: '0 20px' }}>
-      <header style={{ marginBottom: '64px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+    <div className="animate-fade-in" style={{ padding: '0' }}>
+      <header className="overview-header" style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
         <div>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '8px', letterSpacing: '-2px', fontFamily: "'Sora', sans-serif" }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: 800, color: 'var(--text-main)', marginBottom: '4px', letterSpacing: '-1.5px', fontFamily: "'Sora', sans-serif" }}>
             Hello, {user.name.split(' ')[0]}
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', fontWeight: 500 }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(1rem, 3vw, 1.2rem)', fontWeight: 500 }}>
             Performance overview for <strong style={{ color: 'var(--text-main)' }}>{user.businessName}</strong>
           </p>
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)' }}>Status</div>
-          <div style={{ color: '#059669', fontWeight: 800, fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ textAlign: 'left' }}>
+          <div style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)' }}>Status</div>
+          <div style={{ color: '#059669', fontWeight: 800, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669' }}></div> Online & Active
           </div>
         </div>
       </header>
 
-      <div className="stat-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', marginBottom: '80px' }}>
+      <div className="stat-grid-3">
         {[
           { icon: <DashboardIcon />, bg: 'var(--text-main)', color: 'white', label: 'Total Revenue', value: `₹${stats.totalSales?.toLocaleString() || 0}`, sub: '+12% from last month' },
-          { icon: <OrdersIcon />,    bg: 'var(--text-main)', color: 'white', label: 'Active Orders', value: stats.activeOrders || 0, sub: '4 pending dispatch' },
-          { icon: <InventoryIcon />, bg: 'var(--text-main)', color: 'white', label: 'Stock Items', value: products.length, sub: '2 items low stock' },
+          { icon: <OrdersIcon />,    bg: 'var(--text-main)', color: 'white', label: 'Active Orders', value: stats.activeOrders || 0, sub: '4 pending' },
+          { icon: <InventoryIcon />, bg: 'var(--text-main)', color: 'white', label: 'Stock Items', value: products.length, sub: '2 items low' },
         ].map((c, i) => (
-          <div key={i} className="glass-card" style={{ padding: '40px', border: '1px solid var(--border-soft)', background: 'white', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-              <div style={{ fontSize: '1.5rem', color: 'white', background: 'var(--text-main)', padding: '16px', borderRadius: '16px' }}>{c.icon}</div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: i === 0 ? 'var(--secondary)' : '#64748B' }}>{c.sub}</div>
+          <div key={i} className="glass-card" style={{ padding: '30px', border: '1px solid var(--border-soft)', background: 'white', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div style={{ fontSize: '1.2rem', color: 'white', background: 'var(--text-main)', padding: '12px', borderRadius: '12px' }}>{c.icon}</div>
+              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: i === 0 ? 'var(--secondary)' : '#64748B' }}>{c.sub}</div>
             </div>
             <div>
-              <h6 style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 800, marginBottom: '8px' }}>{c.label}</h6>
-              <span style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: "'Sora', sans-serif" }}>{c.value}</span>
+              <h6 style={{ color: 'var(--text-muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 800, marginBottom: '4px' }}>{c.label}</h6>
+              <span style={{ fontSize: 'clamp(1.8rem, 5vw, 2.2rem)', fontWeight: 800, color: 'var(--text-main)', fontFamily: "'Sora', sans-serif" }}>{c.value}</span>
             </div>
           </div>
         ))}
       </div>
 
       {/* Revenue Graph Section */}
-      <div className="glass-card" style={{ padding: '32px', marginBottom: '48px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+      <div className="glass-card" style={{ padding: '24px', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.2rem' }}>
               <FaChartLine color="var(--primary)" /> Revenue Growth
             </h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
-              Daily performance for <strong>{(stats.month || new Date().toLocaleString('default', { month: 'long' }))} {(stats.year || new Date().getFullYear())}</strong>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '2px' }}>
+              Daily for <strong>{(stats.month || new Date().toLocaleString('default', { month: 'long' }))}</strong>
             </p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Month Total</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)' }}>₹{(chartData.reduce((acc, curr) => acc + curr.revenue, 0) || 0).toLocaleString()}</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Month Total</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary)' }}>₹{(chartData.reduce((acc, curr) => acc + curr.revenue, 0) || 0).toLocaleString()}</div>
           </div>
         </div>
 
-        <div className="chart-container" style={{ width: '100%', height: 350 }}>
+        <div className="chart-container" style={{ width: '100%', height: 'clamp(200px, 40vh, 350px)' }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
@@ -561,7 +561,7 @@ function OrdersTab({ orders, user, onUpdateStatus }) {
                 </select>
               </div>
             </div>
-            <div className="order-grid-2" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '48px', padding: '32px' }}>
+            <div className="order-grid-2" style={{ padding: '24px' }}>
               <div>
                 <h5 style={{ marginBottom: '20px', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Purchased Items</h5>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

@@ -105,23 +105,23 @@ export default function Checkout() {
         ))}
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '60px auto', padding: '0 40px', display: 'grid', gridTemplateColumns: '1fr 400px', gap: '80px' }}>
+      <div className="checkout-layout">
         {/* Left Side: Form Blocks */}
         <div className="animate-fade-in">
           {step === 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Delivery Details</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '12px' }}>
+                <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Delivery Details</h2>
                 <button 
                   onClick={handleGetCurrentLocation}
-                  style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.9rem' }}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.85rem' }}
                 >
                   <FaCrosshairs size={14} /> {gettingLocation ? 'Locating...' : 'Use current location'}
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
-                <div style={{ gridColumn: 'span 2' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+                <div style={{ gridColumn: '1 / -1' }}>
                   <label className="input-label" style={{ fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', display: 'block' }}>Full Name</label>
                   <input className="input-field" placeholder="Enter your name" value={address.name} onChange={e => setAddress({...address, name: e.target.value})} />
                 </div>
@@ -133,7 +133,7 @@ export default function Checkout() {
                   <label className="input-label" style={{ fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', display: 'block' }}>PIN Code</label>
                   <input className="input-field" placeholder="6-digit PIN" value={address.pincode} onChange={e => setAddress({...address, pincode: e.target.value.replace(/\D/g, '').slice(0,6)})} />
                 </div>
-                <div style={{ gridColumn: 'span 2' }}>
+                <div style={{ gridColumn: '1 / -1' }}>
                   <label className="input-label" style={{ fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', display: 'block' }}>Street Address</label>
                   <input className="input-field" placeholder="House no, Building, Street" value={address.street} onChange={e => setAddress({...address, street: e.target.value})} />
                 </div>
@@ -150,74 +150,74 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <button className="btn-primary" style={{ padding: '20px', borderRadius: '12px' }} onClick={() => setStep(1)}>
+              <button className="btn-primary" style={{ padding: '18px', borderRadius: '12px', marginTop: '12px' }} onClick={() => setStep(1)}>
                 Continue to Summary
               </button>
             </div>
           )}
 
           {step === 1 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-              <h2 style={{ fontSize: '2rem', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Review Order</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Review Order</h2>
               
-              <div style={{ background: '#F8FAFC', padding: '32px', borderRadius: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Shipping To</span>
+              <div style={{ background: '#F8FAFC', padding: '24px', borderRadius: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Shipping To</span>
                   <button onClick={() => setStep(0)} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer', fontSize: '0.8rem' }}>Edit</button>
                 </div>
                 <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>{address.name}</div>
-                <div style={{ color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.6 }}>
+                <div style={{ color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.5, fontSize: '0.95rem' }}>
                   {address.street}, {address.city}, {address.state} - {address.pincode}<br/>
                   {address.phone}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Bag Content</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <span style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Bag Content</span>
                 {cart?.items?.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-                    <img src={item.product?.images?.[0]} style={{ width: '80px', height: '100px', objectFit: 'cover', borderRadius: '12px', background: '#f8fafc' }} />
+                  <div key={i} style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <img src={item.product?.images?.[0]} style={{ width: '60px', height: '70px', objectFit: 'cover', borderRadius: '10px', background: '#f8fafc' }} />
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{item.product?.name}</div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>Size: {item.size} • Qty: {item.quantity}</div>
+                      <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem' }}>{item.product?.name}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>Size: {item.size} • Qty: {item.quantity}</div>
                     </div>
-                    <div style={{ fontWeight: 800 }}>₹{((item.product?.price || 0) * item.quantity).toLocaleString()}</div>
+                    <div style={{ fontWeight: 800, fontSize: '1rem' }}>₹{((item.product?.price || 0) * item.quantity).toLocaleString()}</div>
                   </div>
                 ))}
               </div>
 
-              <button className="btn-primary" style={{ padding: '20px', borderRadius: '12px' }} onClick={() => setStep(2)}>
+              <button className="btn-primary" style={{ padding: '18px', borderRadius: '12px' }} onClick={() => setStep(2)}>
                 Continue to Payment
               </button>
             </div>
           )}
 
           {step === 2 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-              <h2 style={{ fontSize: '2rem', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Payment</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, fontFamily: "'Sora', sans-serif" }}>Payment</h2>
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {[
-                  { id: 'COD', label: 'Cash on Delivery', desc: 'Pay securely at your doorstep' },
-                  { id: 'UPI', label: 'UPI Payment', desc: 'Scan & Pay with any UPI app' },
-                  { id: 'CARD', label: 'Credit / Debit Card', desc: 'Secure encryption enabled' },
+                  { id: 'COD', label: 'Cash on Delivery', desc: 'Secure doorstep payment' },
+                  { id: 'UPI', label: 'UPI Payment', desc: 'Scan & Pay instantly' },
+                  { id: 'CARD', label: 'Credit / Debit Card', desc: 'End-to-end encrypted' },
                 ].map(m => (
                   <div 
                     key={m.id} 
                     onClick={() => setPaymentMethod(m.id)}
                     style={{ 
-                      padding: '24px', borderRadius: '16px', border: '1.5px solid', 
+                      padding: '20px', borderRadius: '16px', border: '1.5px solid', 
                       borderColor: paymentMethod === m.id ? 'var(--text-main)' : 'var(--border-soft)',
                       background: paymentMethod === m.id ? 'rgba(15, 23, 42, 0.02)' : 'white',
-                      cursor: 'pointer', display: 'flex', gap: '20px', alignItems: 'center', transition: 'var(--transition)'
+                      cursor: 'pointer', display: 'flex', gap: '16px', alignItems: 'center', transition: 'var(--transition)'
                     }}
                   >
-                    <div style={{ width: '20px', height: '20px', borderRadius: '50%', border: '2px solid', borderColor: paymentMethod === m.id ? 'var(--text-main)' : '#CBD5E1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {paymentMethod === m.id && <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--text-main)' }}></div>}
+                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: '2px solid', borderColor: paymentMethod === m.id ? 'var(--text-main)' : '#CBD5E1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {paymentMethod === m.id && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--text-main)' }}></div>}
                     </div>
                     <div>
-                      <div style={{ fontWeight: 700 }}>{m.label}</div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '2px' }}>{m.desc}</div>
+                      <div style={{ fontWeight: 700, fontSize: '1rem' }}>{m.label}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{m.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -225,7 +225,7 @@ export default function Checkout() {
 
               <button 
                 className="btn-primary" 
-                style={{ padding: '20px', borderRadius: '12px', background: 'var(--text-main)' }} 
+                style={{ padding: '18px', borderRadius: '12px', background: 'var(--text-main)', marginTop: '12px' }} 
                 onClick={handlePlaceOrder}
                 disabled={placing}
               >
@@ -236,26 +236,26 @@ export default function Checkout() {
         </div>
 
         {/* Right Side: Summary Card */}
-        <div>
-          <div style={{ border: '1.5px solid var(--border-soft)', padding: '40px', borderRadius: '24px', position: 'sticky', top: '40px' }}>
-            <h3 style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '32px' }}>Summary</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
+        <div className="cart-summary-section">
+          <div style={{ border: '1.5px solid var(--border-soft)', padding: '32px', borderRadius: '24px' }}>
+            <h3 style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '24px' }}>Order Summary</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
                 <span>Subtotal</span>
                 <span>₹{subtotal.toLocaleString()}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
                 <span>Shipping</span>
                 <span style={{ color: '#059669', fontWeight: 600 }}>Complimentary</span>
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1.5px solid var(--border-soft)', paddingTop: '24px', marginBottom: '32px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1.5px solid var(--border-soft)', paddingTop: '20px', marginBottom: '24px' }}>
               <span style={{ fontWeight: 800, fontSize: '1.1rem' }}>Total</span>
-              <span style={{ fontWeight: 800, fontSize: '1.3rem' }}>₹{subtotal.toLocaleString()}</span>
+              <span style={{ fontWeight: 800, fontSize: '1.2rem' }}>₹{subtotal.toLocaleString()}</span>
             </div>
             
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669' }}></div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#059669' }}></div>
               Secure encrypted checkout
             </div>
           </div>

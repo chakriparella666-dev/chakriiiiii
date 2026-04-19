@@ -111,60 +111,51 @@ export default function ProductDetail() {
       <Toast message={toast.message} type={toast.type} />
 
       {/* Breadcrumb Nav */}
-      <div style={{ padding: '32px 40px 0', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.85rem' }}>
-        <button onClick={() => navigate('/buyer')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: 600, transition: 'var(--transition)' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--text-main)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
-          <FaArrowLeft size={12} /> Store
+      {/* Breadcrumb Nav */}
+      <div style={{ padding: '24px 20px 0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', flexWrap: 'wrap' }}>
+        <button onClick={() => navigate('/buyer')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: 600 }}>
+          <FaArrowLeft size={10} /> Store
         </button>
         <span style={{ color: '#CBD5E1' }}>/</span>
-        <span style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.75rem', fontWeight: 700 }}>{product.category}</span>
+        <span style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.7rem', fontWeight: 700 }}>{product.category}</span>
         <span style={{ color: '#CBD5E1' }}>/</span>
-        <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{product.name}</span>
+        <span style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '0.75rem' }}>{product.name}</span>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '24px auto', padding: '0 24px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '48px' }}>
+      <div className="product-detail-layout">
         {/* Left: Image Gallery */}
-        <div>
-          <div style={{ position: 'relative', marginBottom: '16px', borderRadius: '12px', overflow: 'hidden', background: '#F8FAFC', height: '400px' }}>
+        <div style={{ width: '100%' }}>
+          <div style={{ position: 'relative', marginBottom: '16px', borderRadius: '12px', overflow: 'hidden', background: '#F8FAFC', height: 'clamp(300px, 50vw, 450px)' }}>
             <div 
               onClick={toggleWishlist}
-              style={{ position: 'absolute', top: '24px', right: '24px', zIndex: 10, background: 'white', borderRadius: '50%', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', cursor: 'pointer', transition: 'var(--transition)' }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              style={{ position: 'absolute', top: '16px', right: '16px', zIndex: 10, background: 'white', borderRadius: '50%', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', cursor: 'pointer' }}
             >
-              {isWished ? <FaHeart color="#ef4444" size={20} /> : <FaRegHeart color="var(--text-main)" size={20} />}
+              {isWished ? <FaHeart color="#ef4444" size={18} /> : <FaRegHeart color="var(--text-main)" size={18} />}
             </div>
 
             {totalStock === 0 && (
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
-                <span style={{ background: 'var(--text-main)', color: 'white', padding: '14px 32px', borderRadius: '4px', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}>Sold Out</span>
+                <span style={{ background: 'var(--text-main)', color: 'white', padding: '12px 24px', borderRadius: '4px', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '1px', textTransform: 'uppercase' }}>Sold Out</span>
               </div>
             )}
             
             <img
               src={product.images[selectedImg] || 'https://via.placeholder.com/800?text=No+Image'}
-              style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)' }}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               alt={product.name}
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
               onError={e => { e.target.src = 'https://via.placeholder.com/800?text=Error' }}
             />
           </div>
 
           {product.images.length > 1 && (
-            <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '12px' }}>
+            <div className="buyer-subnav" style={{ display: 'flex', gap: '12px', padding: '8px 0', border: 'none', background: 'transparent' }}>
               {product.images.map((img, i) => (
                 <div 
                   key={i} 
                   onClick={() => setSelectedImg(i)}
                   style={{ 
-                    width: '80px', 
-                    height: '80px', 
-                    borderRadius: '8px', 
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    border: `2px solid ${i === selectedImg ? 'var(--text-main)' : 'transparent'}`,
-                    transition: 'var(--transition)',
-                    flexShrink: 0
+                    width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden', cursor: 'pointer',
+                    border: `2px solid ${i === selectedImg ? 'var(--text-main)' : 'transparent'}`, flexShrink: 0
                   }}
                 >
                   <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={e => { e.target.src = 'https://via.placeholder.com/100' }} />
@@ -175,79 +166,70 @@ export default function ProductDetail() {
         </div>
 
         {/* Right: Product Info */}
-        <div style={{ paddingTop: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1.5px' }}>{product.category}</span>
+        <div style={{ paddingTop: '0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>{product.category}</span>
             <span style={{ color: '#CBD5E1' }}>•</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <FaStar color="#FFB800" size={12} />
-              <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>{product.rating || '4.5'}</span>
+              <FaStar color="#FFB800" size={10} />
+              <span style={{ fontWeight: 700, fontSize: '0.75rem' }}>{product.rating || '4.5'}</span>
             </div>
           </div>
 
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, fontFamily: "'Sora', sans-serif", letterSpacing: '-0.8px', lineHeight: 1.2, marginBottom: '8px', color: 'var(--text-main)' }}>{product.name}</h1>
+          <h1 style={{ fontSize: 'clamp(1.4rem, 5vw, 1.8rem)', fontWeight: 800, fontFamily: "'Sora', sans-serif", letterSpacing: '-0.5px', lineHeight: 1.2, marginBottom: '8px', color: 'var(--text-main)' }}>{product.name}</h1>
           
-          <div style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '32px', fontWeight: 500 }}>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '24px', fontWeight: 500 }}>
             by <strong style={{ color: 'var(--text-main)', fontWeight: 700 }}>{product.seller?.businessName || 'MSME Direct'}</strong>
           </div>
 
-          <div style={{ marginBottom: '32px' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'baseline', gap: '8px', fontFamily: "'Sora', sans-serif" }}>
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'baseline', gap: '8px', fontFamily: "'Sora', sans-serif" }}>
               ₹{product.price.toLocaleString()}
-              <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Inc. of all taxes</span>
+              <span style={{ fontSize: '0.7rem', color: '#059669', fontWeight: 700, textTransform: 'uppercase' }}>All taxes inc.</span>
             </div>
           </div>
 
           {/* Size Selector */}
-          <div style={{ marginBottom: '40px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <span style={{ fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Select Size</span>
-              <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }}>Size Guide</button>
+          <div style={{ marginBottom: '32px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <span style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase' }}>Select Size</span>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(60px, 1fr))', gap: '8px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {product.sizes.map(s => (
                 <button
                   key={s.size}
                   onClick={() => s.stock > 0 && setSelectedSize(s.size)}
                   disabled={s.stock === 0}
                   style={{
-                    height: '44px',
-                    borderRadius: '6px',
-                    border: '1.2px solid',
+                    padding: '10px 16px', borderRadius: '8px', border: '1.2px solid',
                     borderColor: selectedSize === s.size ? 'var(--text-main)' : s.stock === 0 ? '#F1F5F9' : '#E2E8F0',
                     background: selectedSize === s.size ? 'var(--text-main)' : 'white',
                     color: selectedSize === s.size ? 'white' : s.stock === 0 ? '#CBD5E1' : 'var(--text-main)',
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                    cursor: s.stock === 0 ? 'not-allowed' : 'pointer',
-                    transition: 'var(--transition)'
+                    fontSize: '0.75rem', fontWeight: 700, cursor: s.stock === 0 ? 'not-allowed' : 'pointer', minWidth: '48px'
                   }}
                 >
                   {s.size}
-                  {s.stock > 0 && s.stock <= 3 && (
-                    <div style={{ position: 'absolute', bottom: '-20px', left: 0, right: 0, fontSize: '10px', color: '#ef4444' }}>Low stock</div>
-                  )}
                 </button>
               ))}
             </div>
           </div>
 
           {/* CTA Buttons */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '48px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '40px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: '12px' }}>
               <button 
                 onClick={handleAddToCart} 
                 disabled={addingToCart || totalStock === 0} 
                 className="btn-primary"
-                style={{ padding: '20px', borderRadius: '12px', fontSize: '1rem', width: '100%', background: 'var(--text-main)' }}
+                style={{ padding: '16px', borderRadius: '12px', fontSize: '1rem', width: '100%', background: 'var(--text-main)' }}
               >
                 {addingToCart ? 'Adding...' : 'Add to Bag'}
               </button>
               
               <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{ flex: 1, height: '100%', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>−</button>
-                <span style={{ width: '40px', textAlign: 'center', fontWeight: 700 }}>{quantity}</span>
+                <span style={{ width: '30px', textAlign: 'center', fontWeight: 700, fontSize: '0.9rem' }}>{quantity}</span>
                 <button 
                   onClick={() => setQuantity(Math.min(selectedSizeStock || 1, quantity + 1))}
                   style={{ flex: 1, height: '100%', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
@@ -259,33 +241,30 @@ export default function ProductDetail() {
               onClick={handleBuyNow} 
               disabled={totalStock === 0} 
               className="btn-outline"
-              style={{ padding: '20px', borderRadius: '12px', fontSize: '1rem', width: '100%' }}
+              style={{ padding: '16px', borderRadius: '12px', fontSize: '1rem', width: '100%' }}
             >
               Checkout Now
             </button>
           </div>
 
           {/* Value Props */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '24px', padding: '32px 0', borderTop: '1px solid var(--border-soft)', marginBottom: '40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))', gap: '16px', padding: '24px 0', borderTop: '1px solid var(--border-soft)', marginBottom: '32px' }}>
             {[
-              { icon: <FaShieldAlt size={20} />, title: 'Genuine', sub: 'Verified' },
-              { icon: <FaTruck size={20} />, title: 'Express', sub: 'Next Day' },
-              { icon: <FaUndo size={20} />, title: 'Returns', sub: '7-Day' },
+              { icon: <FaShieldAlt size={16} />, title: 'Genuine' },
+              { icon: <FaTruck size={16} />, title: 'Express' },
+              { icon: <FaUndo size={16} />, title: 'Returns' },
             ].map((b, i) => (
-              <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <div style={{ color: 'var(--text-muted)' }}>{b.icon}</div>
-                <div>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700 }}>{b.title}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{b.sub}</div>
-                </div>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700 }}>{b.title}</div>
               </div>
             ))}
           </div>
 
           {/* Description */}
-          <div style={{ borderTop: '1px solid var(--border-soft)', paddingTop: '32px' }}>
-            <h3 style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Details</h3>
-            <p style={{ color: 'var(--text-muted)', lineHeight: 1.8, fontSize: '1rem' }}>{product.description}</p>
+          <div style={{ borderTop: '1px solid var(--border-soft)', paddingTop: '24px' }}>
+            <h3 style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px' }}>Item Details</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, fontSize: '0.95rem' }}>{product.description}</p>
           </div>
         </div>
       </div>
