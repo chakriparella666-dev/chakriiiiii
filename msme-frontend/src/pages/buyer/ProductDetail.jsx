@@ -217,17 +217,17 @@ export default function ProductDetail() {
 
           {/* CTA Buttons */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '40px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: '12px' }}>
+            <div className="product-cta-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: '12px' }}>
               <button 
                 onClick={handleAddToCart} 
                 disabled={addingToCart || totalStock === 0} 
                 className="btn-primary"
-                style={{ padding: '16px', borderRadius: '12px', fontSize: '1rem', width: '100%', background: 'var(--text-main)' }}
+                style={{ padding: '16px', borderRadius: '12px', fontSize: '1rem', width: '100%', background: 'var(--text-main)', minWidth: 0 }}
               >
                 {addingToCart ? 'Adding...' : 'Add to Bag'}
               </button>
               
-              <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden', width: '120px', flexShrink: 0 }}>
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{ flex: 1, height: '100%', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>−</button>
                 <span style={{ width: '30px', textAlign: 'center', fontWeight: 700, fontSize: '0.9rem' }}>{quantity}</span>
                 <button 

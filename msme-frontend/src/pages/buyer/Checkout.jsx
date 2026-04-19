@@ -87,9 +87,9 @@ export default function Checkout() {
       </header>
 
       {/* Modern Progress Line */}
-      <div style={{ maxWidth: '600px', margin: '40px auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: '#F1F5F9', zIndex: 1 }}></div>
-        <div style={{ position: 'absolute', top: '50%', left: 0, width: `${(step / (steps.length - 1)) * 100}%`, height: '2px', background: 'var(--text-main)', zIndex: 2, transition: 'width 0.6s cubic-bezier(0.16, 1, 0.3, 1)' }}></div>
+      <div style={{ width: '100%', maxWidth: '600px', margin: '40px auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', padding: '0 20px' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '20px', right: '20px', height: '2px', background: '#F1F5F9', zIndex: 1, transform: 'translateY(-6px)' }}></div>
+        <div style={{ position: 'absolute', top: '50%', left: '20px', width: `calc(${(step / (steps.length - 1)) * 100}% - 40px)`, height: '2px', background: 'var(--text-main)', zIndex: 2, transition: 'width 0.6s cubic-bezier(0.16, 1, 0.3, 1)', transform: 'translateY(-6px)' }}></div>
         
         {steps.map((s, i) => (
           <div key={i} style={{ zIndex: 10, position: 'relative', textAlign: 'center' }}>
@@ -120,7 +120,7 @@ export default function Checkout() {
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+              <div className="checkout-form-grid">
                 <div style={{ gridColumn: '1 / -1' }}>
                   <label className="input-label" style={{ fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', display: 'block' }}>Full Name</label>
                   <input className="input-field" placeholder="Enter your name" value={address.name} onChange={e => setAddress({...address, name: e.target.value})} />

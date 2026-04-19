@@ -273,17 +273,62 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 24px;
 }
 
-.stat-grid-3 {
+/* ── Grid & Flex Utils ── */
+.grid-stack {
   display: grid;
+  gap: 24px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
-  margin-bottom: 80px;
 }
 
-.order-grid-2 {
+.checkout-form-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 48px;
+  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 600px) {
+  .checkout-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Auth Layouts ── */
+.auth-page-wrapper {
+  min-height: 100vh;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: #F8FAFC;
+  padding: 20px;
+}
+
+.auth-card-container {
+  display: flex !important;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 600px;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+}
+
+.auth-left-panel {
+  flex: 1.1;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  padding: 48px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-right-panel {
+  flex: 1;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Buyer Professional UI */
@@ -560,16 +605,45 @@ h1, h2, h3, h4, h5, h6 {
   .account-avatar { width: 80px !important; height: 80px !important; font-size: 2rem !important; }
 
   /* ── Buyer Pages ── */
-  .cart-layout { flex-direction: column !important; margin: 16px auto !important; }
-  .cart-items-section { width: 100% !important; }
-  .cart-summary-section { width: 100% !important; position: static !important; }
+  /* ── Buyer Pages ── */
+  .cart-layout, .checkout-layout, .product-detail-layout {
+    display: block !important;
+    padding: 16px !important;
+    margin: 0 auto !important;
+  }
 
-  .checkout-layout { flex-direction: column !important; }
+  .cart-items-section, .cart-summary-section {
+    width: 100% !important;
+    position: static !important;
+    margin-bottom: 32px;
+  }
 
-  .product-detail-layout { flex-direction: column !important; }
-  .product-detail-img { height: 280px !important; }
+  .checkout-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Auth Mobile ── */
+  .auth-card-container {
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: 12px !important;
+    min-height: auto !important;
+    margin: 10px;
+    width: calc(100% - 20px) !important;
+  }
+  .auth-left-panel {
+    display: none !important;
+  }
+  .auth-right-panel {
+    padding: 24px 20px !important;
+    width: 100% !important;
+  }
 
   .main-content-pad { padding: 0 12px !important; }
+
+  .product-cta-row {
+    grid-template-columns: 1fr !important;
+  }
 
   .page-header { margin-bottom: 16px !important; }
   .page-header h1 { font-size: 1.4rem !important; }

@@ -76,9 +76,10 @@ export default function Register() {
   }
 
   return (
-    <div style={S.page}>
-      <div style={S.wrapper}>
-        <div className="left-panel" style={S.left}>
+    <div className="auth-page-wrapper">
+      <div className="auth-card-container">
+        {/* ── LEFT PANEL ── */}
+        <div className="auth-left-panel">
           <div style={S.blob1} /><div style={S.blob2} />
           <div style={{ position: 'relative', zIndex: 2 }}>
             <div style={S.logoRow}>
@@ -89,7 +90,9 @@ export default function Register() {
             <p style={S.desc}>Start your journey with the AI-powered smart aggregator for Micro, Small & Medium Enterprises.</p>
           </div>
         </div>
-        <div className="right-panel" style={S.right}>
+
+        {/* ── RIGHT PANEL ── */}
+        <div className="auth-right-panel">
           <div style={S.formCard}>
             <h1 style={S.title}>Create Account</h1>
             <p style={S.subtitle}>Sign up to start scale your business</p>

@@ -212,69 +212,36 @@ export default function Login() {
   ]
 
   return (
-    <div style={S.page}>
-      {/* ── MOBILE HEADER (shown only on mobile via media query via inline style override) ── */}
-      <style>{`
-        @media (max-width: 767px) {
-          .left-panel   { display: none !important; }
-          .right-panel  { padding: 28px 22px !important; }
-          .form-wrapper { max-width: 100% !important; }
-          .mobile-hdr   { display: flex !important; }
-          .page-wrap    { border-radius: 20px !important; min-height: unset !important; flex-direction: column !important; }
-          .form-title   { font-size: 21px !important; }
-        }
-        @media (min-width: 768px) and (max-width: 1023px) {
-          .left-panel  { flex: 0 0 42% !important; padding: 36px 28px !important; }
-          .right-panel { padding: 40px 32px !important; }
-          .left-tagline { font-size: 24px !important; }
-        }
-      `}</style>
-
-      <div className="page-wrap" style={S.wrapper}>
-
+    <div className="auth-page-wrapper">
+      <div className="auth-card-container">
         {/* ── LEFT PANEL ── */}
-        <div className="left-panel" style={S.left}>
+        <div className="auth-left-panel">
           <div style={S.blob1} /><div style={S.blob2} /><div style={S.blob3} />
           <div style={{ position:'relative', zIndex:2 }}>
             <div style={S.logoRow}>
               <div style={S.logoBox}>MSME</div>
               <div>
                 <span style={S.logoText}>MSME Platform</span>
-                <span style={S.logoSub}>AI Aggregation for MSMEs</span>
+                <span style={{ fontSize:10, color:'#8B93B8', letterSpacing:'0.6px', textTransform:'uppercase', display:'block', marginTop:2 }}>AI Aggregation</span>
               </div>
             </div>
             <div className="left-tagline" style={S.tagline}>
               Empowering Every<br /><span style={S.taglineAccent}>Enterprise</span>
             </div>
-            <p style={S.desc}>An AI-powered smart aggregator connecting Micro, Small & Medium Enterprises with buyers, logistics, finance & government schemes.</p>
+            <p style={S.desc}>An AI-powered smart aggregator connecting MSMEs with buyers, logistics, and finance.</p>
             <div style={S.features}>
               {features.map((f, i) => (
                 <div key={i} className="feat-card" style={S.featCard}>
-                  <div style={S.featIcon}><span style={{ fontSize:16 }}>{f.icon}</span></div>
+                  <div style={S.featIcon}><span style={{ fontSize:15 }}>{f.icon}</span></div>
                   <div><div style={S.featTitle}>{f.title}</div><div style={S.featDesc}>{f.desc}</div></div>
                 </div>
               ))}
             </div>
           </div>
-          <div style={S.badges}>
-            {['District-level AI','Govt. Integrated','MSME Focused','Cloud-based'].map(b => (
-              <span key={b} style={S.badge}>{b}</span>
-            ))}
-          </div>
         </div>
 
         {/* ── RIGHT PANEL ── */}
-        <div className="right-panel" style={S.right}>
-
-          {/* Mobile-only top header */}
-          <div className="mobile-hdr" style={{ ...S.mobileHeader, alignItems:'center', gap:10, marginBottom:24, background:'linear-gradient(135deg,#EEF2FF,#E8EDFB)', borderRadius:16, padding:'16px 18px' }}>
-            <div style={S.logoBox}>MSME</div>
-            <div>
-              <div style={{ fontFamily:"'Sora',sans-serif", fontWeight:700, fontSize:15, color:'#1A1F5E' }}>MSME Platform</div>
-              <div style={{ fontSize:10, color:'#8B93B8', textTransform:'uppercase', letterSpacing:'0.6px' }}>AI Aggregation for MSMEs</div>
-            </div>
-          </div>
-
+        <div className="auth-right-panel">
           <div className="form-card form-wrapper" style={S.formCard}>
             <div style={S.chipRow}>
               <div style={S.chipBox}>MSME</div>
@@ -288,7 +255,7 @@ export default function Login() {
 
             {success && (
               <div style={S.successBanner}>
-                <span>✓</span> Signed in successfully! Redirecting to dashboard...
+                <span>✓</span> Signed in successfully!
               </div>
             )}
             {apiError && <div style={S.errorBanner}>{apiError}</div>}
@@ -297,7 +264,7 @@ export default function Login() {
 
             <div style={S.divider}>
               <div style={S.divLine} />
-              <span style={S.divText}>or continue with email</span>
+              <span style={S.divText}>or use email</span>
               <div style={S.divLine} />
             </div>
 
