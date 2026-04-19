@@ -12,10 +12,11 @@ const CLIENT = process.env.CLIENT_URL ||
 
 const sendToken = (user, statusCode, res) => {
   const token = signToken(user._id)
+  const isProduction = process.env.NODE_ENV === 'production' || IS_RENDER;
   res.cookie('token', token, {
     httpOnly: true,
-    secure:   isProd,          // true on Render (HTTPS), false locally
-    sameSite: isProd ? 'none' : 'lax', // cross-site on prod (Vercel → Render)
+    secure:   isProduction,          
+    sameSite: isProduction ? 'none' : 'lax', 
     maxAge:   7 * 24 * 60 * 60 * 1000,
   })
   user.password = undefined
